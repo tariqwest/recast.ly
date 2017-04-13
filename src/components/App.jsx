@@ -19,14 +19,31 @@
 // window.App = App;
 
 /**********REFACTOR***********/
+//searchYouTube({ key: 'AIzaSyDxNNH0iTkW6wmwxxajMt_lDiwvic_f9a8', query: 'cats', max: 10 }, function (data) { console.log(data, 'yes!!!')});
+var callback = (data) => { 
+  //console.log(data); 
+  return data;
+};
+
+//var returnedVideos = window.searchYouTube({ key: 'AIzaSyDxNNH0iTkW6wmwxxajMt_lDiwvic_f9a8', query: 'cats', max: 10, type: 'video' }, callback);
+
 
 var App = class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentVideo: this.props.videos[0]
+      currentVideo: this.props.videos[0],
+      videos: props.videos
     };
+
     this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
+    window.searchYouTube({ key: 'AIzaSyDxNNH0iTkW6wmwxxajMt_lDiwvic_f9a8', query: 'cats', max: 10, type: 'video' }, this.onVideoFetchSuccess.bind(this));
+  }
+
+  onVideoFetchSuccess(videos) {
+    this.setState({
+      videos: videos.items
+    });
   }
 
   onVideoListEntryClick (video) {
@@ -45,7 +62,7 @@ var App = class App extends React.Component {
           <VideoPlayer video={this.state.currentVideo} />
       </div>
       <div className="col-md-5">
-        <VideoList videos={this.props.videos} videoListEntryClickHandler={this.onVideoListEntryClick} />
+        <VideoList videos={this.state.videos} videoListEntryClickHandler={this.onVideoListEntryClick} />
       </div>
     </div>
     );
