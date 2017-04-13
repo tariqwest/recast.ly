@@ -31,19 +31,37 @@ var callback = (data) => {
 var App = class App extends React.Component {
   constructor(props) {
     super(props);
+    this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
+    this.onSearchEntry = this.onSearchEntry.bind(this);
+    this.onVideoFetchSuccess = this.onVideoFetchSuccess.bind(this);
+    console.log(props.searchYouTube);
+    this.props.searchYouTube(
+      { key: null, query: 'cats', max: 5, type: 'video' }, 
+      this.onVideoFetchSuccess
+      );
+    
+    // window.searchYouTube(
+    //   { key: null, query: 'cats', max: 5, type: 'video' }, 
+    //   this.onVideoFetchSuccess
+    //   );
+
     this.state = {
       currentVideo: this.props.videos[0],
-      videos: props.videos
+      videos: this.props.videos
     };
 
-    this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
-    window.searchYouTube({ key: 'AIzaSyDxNNH0iTkW6wmwxxajMt_lDiwvic_f9a8', query: 'cats', max: 10, type: 'video' }, this.onVideoFetchSuccess.bind(this));
   }
 
   onVideoFetchSuccess(videos) {
-    this.setState({
-      videos: videos.items
-    });
+    
+    // this.setState({
+    //   videos: videos.items,
+    // });
+
+    // this.setState({
+    //   currentVideo: this.state.videos[0]
+    // });
+
   }
 
   onVideoListEntryClick (video) {
@@ -52,12 +70,24 @@ var App = class App extends React.Component {
     });
   }
 
+  onSearchEntry (query) {
+    //console.log(query);
+    // do an ajax request with this query
+
+    this.props.searchYouTube(
+      { key: null, query: query, max: 5, type: 'video' }, 
+      this.onVideoFetchSuccess
+      );
+    // var params = { key: null, query: query, max: 10, type: 'video' };
+    // setTimeout(window.searchYouTube, 1000, )
+  }
+
   render() {
 
 
     return ( 
       <div>
-        <Nav />
+        <Nav onSearchEntry={this.onSearchEntry} />
           <div className="col-md-7">
           <VideoPlayer video={this.state.currentVideo} />
       </div>

@@ -1,0 +1,2 @@
+* refactor youtubesearch methods / api calls
+* handling failure of youtube api search
