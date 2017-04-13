@@ -23,6 +23,17 @@
 var App = class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      currentVideo: this.props.videos[0]
+    };
+  }
+
+  onVideoListEntryClick (event) {
+    console.log(event);
+
+    // this.setState({
+    //   currentVideo: video
+    // });
   }
 
   render() {
@@ -32,10 +43,10 @@ var App = class App extends React.Component {
       <div>
         <Nav />
           <div className="col-md-7">
-          <VideoPlayer video={this.props.videos[0]} />
+          <VideoPlayer video={this.state.currentVideo} />
       </div>
       <div className="col-md-5">
-        <VideoList videos={this.props.videos} />
+        <VideoList videos={this.props.videos} onClick={this.onVideoListEntryClick} />
       </div>
     </div>
     );
