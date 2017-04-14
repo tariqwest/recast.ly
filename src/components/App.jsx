@@ -19,14 +19,6 @@
 // window.App = App;
 
 /**********REFACTOR***********/
-//searchYouTube({ key: 'AIzaSyDxNNH0iTkW6wmwxxajMt_lDiwvic_f9a8', query: 'cats', max: 10 }, function (data) { console.log(data, 'yes!!!')});
-var callback = (data) => { 
-  //console.log(data); 
-  return data;
-};
-
-//var returnedVideos = window.searchYouTube({ key: 'AIzaSyDxNNH0iTkW6wmwxxajMt_lDiwvic_f9a8', query: 'cats', max: 10, type: 'video' }, callback);
-
 
 var App = class App extends React.Component {
   constructor(props) {
@@ -34,17 +26,11 @@ var App = class App extends React.Component {
     this.onVideoListEntryClick = this.onVideoListEntryClick.bind(this);
     this.onSearchEntry = this.onSearchEntry.bind(this);
     this.onVideoFetchSuccess = this.onVideoFetchSuccess.bind(this);
-    console.log(props.searchYouTube);
-    this.props.searchYouTube(
-      { key: null, query: 'cats', max: 5, type: 'video' }, 
+    this.searchYouTube = props.searchYouTube;
+    this.searchYouTube(
+      { key: null, query: 'up yours', max: 5, type: 'video' }, 
       this.onVideoFetchSuccess
       );
-    
-    // window.searchYouTube(
-    //   { key: null, query: 'cats', max: 5, type: 'video' }, 
-    //   this.onVideoFetchSuccess
-    //   );
-
     this.state = {
       currentVideo: this.props.videos[0],
       videos: this.props.videos
@@ -52,15 +38,16 @@ var App = class App extends React.Component {
 
   }
 
-  onVideoFetchSuccess(videos) {
-    
-    // this.setState({
-    //   videos: videos.items,
-    // });
+  onVideoFetchSuccess(youtubeSearchResults) {
+    if(youtubeSearchResults.items.length > 0){
+      this.setState({
+        videos: youtubeSearchResults.items,
+      });
 
-    // this.setState({
-    //   currentVideo: this.state.videos[0]
-    // });
+      this.setState({
+        currentVideo: this.state.videos[0]
+      });
+    }
 
   }
 
@@ -71,15 +58,10 @@ var App = class App extends React.Component {
   }
 
   onSearchEntry (query) {
-    //console.log(query);
-    // do an ajax request with this query
-
-    this.props.searchYouTube(
+    this.searchYouTube(
       { key: null, query: query, max: 5, type: 'video' }, 
       this.onVideoFetchSuccess
       );
-    // var params = { key: null, query: query, max: 10, type: 'video' };
-    // setTimeout(window.searchYouTube, 1000, )
   }
 
   render() {
